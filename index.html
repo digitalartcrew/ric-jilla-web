@@ -30,6 +30,7 @@
       --font-body:  'Inter', system-ui, sans-serif;
       --radius:     4px;
       --transition: .28s cubic-bezier(.4,0,.2,1);
+      --bar-h:      48px;
     }
     html { scroll-behavior: smooth; }
     body {
@@ -93,7 +94,7 @@
 
     /* ─── Nav ──────────────────────────────────────────────── */
     #nav {
-      position: fixed; top: 0; left: 0; right: 0;
+      position: fixed; top: var(--bar-h); left: 0; right: 0;
       z-index: 100;
       padding: 1.1rem 0;
       transition: background var(--transition), box-shadow var(--transition);
@@ -159,6 +160,151 @@
     @media (max-width: 768px) {
       .nav-links, #nav .nav-cta { display: none; }
       .hamburger { display: flex; }
+    }
+
+    /* ─── Music Preview Bar ─────────────────────────────────── */
+    #music-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--bar-h); z-index: 101;
+      background: #0a0a0a;
+      border-bottom: 1px solid var(--border);
+    }
+    .music-bar-inner {
+      height: 100%;
+      display: flex; align-items: center; gap: 1rem;
+      overflow: hidden;
+    }
+    .music-bar-label {
+      font-family: var(--font-head);
+      font-size: .55rem; font-weight: 700;
+      letter-spacing: .35em; text-transform: uppercase;
+      color: var(--gold); white-space: nowrap; flex-shrink: 0;
+    }
+    .music-bar-tracks { display: flex; gap: .5rem; flex-shrink: 0; }
+    .bar-track-btn {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: .3rem .85rem;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      cursor: pointer;
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+    .bar-track-btn:hover { border-color: var(--gold); color: var(--text); }
+    .bar-track-btn.active { background: var(--crimson); border-color: var(--crimson); color: var(--text); }
+    .bar-track-btn svg { flex-shrink: 0; }
+    .music-bar-progress-wrap {
+      display: none; align-items: center; gap: .6rem; flex: 1; min-width: 0;
+    }
+    .music-bar-progress-wrap.visible { display: flex; }
+    .music-bar-now {
+      font-size: .6rem; color: var(--muted); white-space: nowrap;
+      max-width: 140px; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0;
+    }
+    .music-bar-progress {
+      flex: 1; height: 2px; background: var(--border); border-radius: 1px; cursor: pointer;
+    }
+    .music-bar-fill {
+      height: 100%; width: 0%; background: var(--gold); border-radius: 1px;
+      transition: width .15s linear;
+    }
+    .music-bar-time {
+      font-size: .6rem; color: var(--muted); white-space: nowrap;
+      font-variant-numeric: tabular-nums; flex-shrink: 0;
+    }
+    .music-bar-buy {
+      font-size: .6rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--crimson-lt); white-space: nowrap; flex-shrink: 0;
+      transition: color var(--transition);
+    }
+    .music-bar-buy:hover { color: var(--gold); }
+    @media (max-width: 600px) {
+      .music-bar-progress-wrap { display: none !important; }
+    }
+
+    /* ─── Purchase New Music Section ───────────────────────── */
+    #purchase-music { background: var(--dark); }
+    .purchase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .purchase-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      transition: border-color var(--transition);
+    }
+    .purchase-card:hover { border-color: #333; }
+    .purchase-card.active { border-color: var(--crimson); }
+    .purchase-wave {
+      height: 56px;
+      background: var(--black);
+      border-radius: 2px;
+      display: flex; align-items: flex-end; gap: 2px;
+      padding: 6px 8px;
+      overflow: hidden;
+    }
+    .purchase-wave-bar {
+      flex: 1; border-radius: 1px;
+      background: #2a2a2a;
+      transition: background var(--transition);
+    }
+    .purchase-card.active .purchase-wave-bar.filled { background: var(--crimson-lt); }
+    .purchase-track-name {
+      font-family: var(--font-head);
+      font-size: 1.3rem; font-weight: 700;
+      letter-spacing: .04em; text-transform: uppercase;
+      line-height: 1.1;
+    }
+    .purchase-track-artist {
+      font-size: .72rem; color: var(--muted);
+      letter-spacing: .05em; margin-top: .25rem;
+    }
+    .purchase-actions {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto;
+    }
+    .purchase-preview-btn {
+      display: flex; align-items: center; gap: .45rem;
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: transparent; color: var(--muted); cursor: pointer;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .purchase-preview-btn:hover { border-color: var(--muted); color: var(--text); }
+    .purchase-preview-btn.playing { border-color: var(--crimson); color: var(--crimson-lt); }
+    .purchase-right { display: flex; align-items: center; gap: .85rem; }
+    .purchase-price {
+      font-family: var(--font-head);
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--gold);
+    }
+    .purchase-buy-btn {
+      display: flex; align-items: center; gap: .45rem;
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .55rem 1.2rem;
+      background: var(--crimson); color: var(--text);
+      border: none; border-radius: var(--radius); cursor: pointer;
+      transition: background var(--transition);
+    }
+    .purchase-buy-btn:hover { background: var(--crimson-lt); }
+    .purchase-buy-btn.bought { background: #1a4a1a; color: #4ade80; cursor: default; }
+    .purchase-progress {
+      height: 2px; background: var(--border); border-radius: 1px; overflow: hidden;
+    }
+    .purchase-progress-fill {
+      height: 100%; width: 0%; background: var(--crimson);
+      transition: width .15s linear;
     }
 
     /* ─── Hero ─────────────────────────────────────────────── */
@@ -811,6 +957,24 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════════════════
+     MUSIC PREVIEW BAR
+═══════════════════════════════════════════════════════════ -->
+<div id="music-bar">
+  <div class="container music-bar-inner">
+    <span class="music-bar-label">New Music</span>
+    <div class="music-bar-tracks" id="barTracks"></div>
+    <div class="music-bar-progress-wrap" id="barProgressWrap">
+      <span class="music-bar-now" id="barNowPlaying"></span>
+      <div class="music-bar-progress" id="barProgressTrack">
+        <div class="music-bar-fill" id="barFill"></div>
+      </div>
+      <span class="music-bar-time" id="barTime">0:00</span>
+    </div>
+    <a href="#purchase-music" class="music-bar-buy">Buy Tracks ↓</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
      NAV
 ═══════════════════════════════════════════════════════════ -->
 <nav id="nav">
@@ -822,6 +986,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#music">Music</a></li>
+      <li><a href="#purchase-music">Purchase</a></li>
       <li><a href="#videos">Videos</a></li>
       <li><a href="#foundation">Foundation</a></li>
       <li><a href="#connect" class="nav-cta">Stay Connected</a></li>
@@ -836,6 +1001,7 @@
   <button class="mobile-close" id="mobileClose">&#215;</button>
   <a href="#about" class="mobile-link">About</a>
   <a href="#music" class="mobile-link">Music</a>
+  <a href="#purchase-music" class="mobile-link" style="color:var(--crimson-lt)">Purchase</a>
   <a href="#videos" class="mobile-link">Videos</a>
   <a href="#foundation" class="mobile-link">Foundation</a>
   <a href="#connect" class="mobile-link" style="color:var(--gold)">Stay Connected</a>
@@ -1020,6 +1186,21 @@
         Stream on Apple Music
       </a>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PURCHASE NEW MUSIC
+═══════════════════════════════════════════════════════════ -->
+<section id="purchase-music" class="section">
+  <div class="container">
+    <p class="section-label-gold reveal">Exclusive Tracks</p>
+    <h2 class="section-title reveal reveal-delay-1">Purchase New <span class="gold">Music.</span></h2>
+    <div class="divider-gold reveal reveal-delay-2"></div>
+    <p class="reveal reveal-delay-3" style="color:var(--muted);font-size:.9rem;margin-top:1rem;max-width:520px;">
+      High-quality masters available for download. Preview the track, then own it.
+    </p>
+    <div class="purchase-grid" id="purchaseGrid"></div>
   </div>
 </section>
 
@@ -1327,6 +1508,165 @@
     input.value = '';
     setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; }, 3000);
   }
+
+  /* ── Featured Tracks ─────────────────────────────────────── */
+  const featuredTracks = [
+    {
+      id: 'ft1',
+      title: 'Cutch w Nappy3700',
+      artist: 'Cutch & Nappy3700',
+      price: '$29.99',
+      url: 'https://res.cloudinary.com/dcfagqjvf/video/upload/v1775288471/Cutch_w_Nappy3700_smmfrd.mp3'
+    },
+    {
+      id: 'ft2',
+      title: 'Swisher Sweet',
+      artist: 'RicJilla',
+      price: '$24.99',
+      url: 'https://res.cloudinary.com/dcfagqjvf/video/upload/v1775288467/RicJilla_SwisherSweet_MasterBG_v1_cehnyw.mp3'
+    }
+  ];
+
+  /* ── Featured Audio State ─────────────────────────────────── */
+  let featAudio = null, featActiveId = null;
+
+  function stopFeatured() {
+    if (featAudio) { featAudio.pause(); featAudio.currentTime = 0; }
+    featAudio = null;
+    featActiveId = null;
+    document.querySelectorAll('.bar-track-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.purchase-preview-btn').forEach(b => b.classList.remove('playing'));
+    document.querySelectorAll('.purchase-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('barProgressWrap').classList.remove('visible');
+    document.getElementById('barFill').style.width = '0%';
+  }
+
+  function fmtSec(s) {
+    if (!s || isNaN(s)) return '0:00';
+    return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+  }
+
+  function playFeatured(track) {
+    // Stop iTunes catalog player
+    stopCurrent();
+
+    if (featActiveId === track.id) {
+      if (featAudio && !featAudio.paused) { featAudio.pause(); return; }
+      if (featAudio) { featAudio.play(); return; }
+    }
+
+    stopFeatured();
+    featActiveId = track.id;
+    const audio = new Audio(track.url);
+    featAudio = audio;
+
+    // Highlight bar btn
+    document.querySelectorAll('.bar-track-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.id === track.id);
+    });
+    // Highlight purchase card + preview btn
+    document.querySelectorAll('.purchase-card').forEach(c => {
+      c.classList.toggle('active', c.dataset.id === track.id);
+    });
+    document.querySelectorAll('.purchase-preview-btn').forEach(b => {
+      b.classList.toggle('playing', b.dataset.id === track.id);
+    });
+
+    // Show bar progress
+    const wrap = document.getElementById('barProgressWrap');
+    const fill = document.getElementById('barFill');
+    const time = document.getElementById('barTime');
+    const now  = document.getElementById('barNowPlaying');
+    now.textContent = track.title;
+    wrap.classList.add('visible');
+
+    audio.addEventListener('timeupdate', () => {
+      const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      fill.style.width = pct + '%';
+      time.textContent = fmtSec(audio.currentTime);
+      // Sync purchase card waveform
+      document.querySelectorAll('.purchase-wave-bar').forEach((bar, i, arr) => {
+        if (bar.closest('.purchase-card').dataset.id !== track.id) return;
+        bar.classList.toggle('filled', (i / arr.length) * 100 < pct);
+      });
+      // Sync purchase card progress bar
+      const pFill = document.getElementById('pfill-' + track.id);
+      if (pFill) pFill.style.width = pct + '%';
+    });
+    audio.addEventListener('ended', stopFeatured);
+
+    audio.play().catch(stopFeatured);
+  }
+
+  /* ── Build Music Bar ──────────────────────────────────────── */
+  (function buildMusicBar() {
+    const container = document.getElementById('barTracks');
+    container.innerHTML = featuredTracks.map(t => `
+      <button class="bar-track-btn" data-id="${t.id}" onclick="playFeatured(featuredTracks.find(x=>x.id==='${t.id}'))">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        ${t.title}
+      </button>`).join('');
+
+    // Seek on click
+    document.getElementById('barProgressTrack').addEventListener('click', function(e) {
+      if (!featAudio || !featAudio.duration) return;
+      const rect = this.getBoundingClientRect();
+      featAudio.currentTime = ((e.clientX - rect.left) / rect.width) * featAudio.duration;
+    });
+  })();
+
+  /* ── Build Purchase Grid ──────────────────────────────────── */
+  (function buildPurchaseGrid() {
+    const waveHeights = [22,30,38,28,18,34,42,26,32,20,36,44,24,38,28,18,40,30,22,34,42,20,36,26,30,38,24,44,18,32,28,40,22,36,30,18,34,24,42,26,38,20,44,28,32,22,36,30];
+    const grid = document.getElementById('purchaseGrid');
+    grid.innerHTML = featuredTracks.map(t => `
+      <div class="purchase-card reveal" data-id="${t.id}">
+        <div class="purchase-wave">
+          ${waveHeights.map((h, i) => `<div class="purchase-wave-bar" style="height:${h}px" data-i="${i}"></div>`).join('')}
+        </div>
+        <div>
+          <div class="purchase-track-name">${t.title}</div>
+          <div class="purchase-track-artist">${t.artist}</div>
+        </div>
+        <div class="purchase-progress">
+          <div class="purchase-progress-fill" id="pfill-${t.id}"></div>
+        </div>
+        <div class="purchase-actions">
+          <button class="purchase-preview-btn" data-id="${t.id}" onclick="playFeatured(featuredTracks.find(x=>x.id==='${t.id}'))">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Preview
+          </button>
+          <div class="purchase-right">
+            <span class="purchase-price">${t.price}</span>
+            <button class="purchase-buy-btn" id="buy-${t.id}" onclick="handlePurchase('${t.id}','${t.url}','${t.title}')">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              Buy Now
+            </button>
+          </div>
+        </div>
+      </div>`).join('');
+
+    grid.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+  })();
+
+  window.handlePurchase = function(id, url, title) {
+    const btn = document.getElementById('buy-' + id);
+    if (btn && btn.classList.contains('bought')) return;
+    if (btn) {
+      btn.classList.add('bought');
+      btn.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Downloading`;
+    }
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = title + '.mp3';
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  window.playFeatured = playFeatured;
 
   /* ── iTunes API ───────────────────────────────────────────── */
   let allTracks = [];

@@ -6,6 +6,15 @@
   <title>RIC JILLA — The Pride of Indiana</title>
   <meta name="description" content="Official site of Ric Jilla — The Pride of Indiana. One of the first rappers from Indiana to appear on BET. Stream music on Apple Music, watch videos, and learn about the Brother Jill Foundation." />
 
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#9E1B32" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ric Jilla" />
+  <link rel="apple-touch-icon" href="img/R-12960284-1545367288-2901.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -952,6 +961,80 @@
       display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
       font-size: .65rem; color: var(--muted); letter-spacing: .08em;
     }
+
+    /* ─── Add to Home Screen ────────────────────────────────── */
+    #a2hs-btn {
+      display: none;
+      position: fixed; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      align-items: center; gap: .6rem;
+      background: var(--crimson);
+      color: var(--text);
+      font-family: var(--font-head);
+      font-size: .7rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase;
+      padding: .75rem 1.5rem;
+      border: none; border-radius: 2px;
+      cursor: pointer; white-space: nowrap;
+      box-shadow: 0 4px 24px rgba(158,27,50,.45);
+      transition: background var(--transition), transform var(--transition), opacity var(--transition);
+      animation: a2hs-rise .4s ease both;
+    }
+    @keyframes a2hs-rise {
+      from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    #a2hs-btn:hover { background: var(--crimson-lt); }
+    #a2hs-btn.visible { display: flex; }
+    @media (min-width: 769px) { #a2hs-btn { display: none !important; } }
+
+    /* iOS tip overlay */
+    #a2hs-ios-tip {
+      display: none; position: fixed; inset: 0;
+      background: rgba(5,5,5,.88); z-index: 300;
+      align-items: flex-end; justify-content: center;
+      padding-bottom: 2rem;
+    }
+    #a2hs-ios-tip.open { display: flex; }
+    .a2hs-tip-box {
+      background: #161616;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.75rem 2rem;
+      max-width: 340px; width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    .a2hs-tip-box::after {
+      content: '';
+      position: absolute; bottom: -10px; left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-top-color: #161616;
+      border-bottom: none;
+    }
+    .a2hs-tip-title {
+      font-family: var(--font-head);
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .a2hs-tip-steps {
+      font-size: .8rem; color: var(--muted); line-height: 1.8;
+      list-style: none;
+    }
+    .a2hs-tip-steps li { margin-bottom: .4rem; }
+    .a2hs-tip-steps strong { color: var(--text); }
+    .a2hs-tip-close {
+      margin-top: 1.25rem;
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); cursor: pointer;
+      background: none; border: none;
+      transition: color var(--transition);
+    }
+    .a2hs-tip-close:hover { color: var(--text); }
   </style>
 </head>
 <body>
@@ -1441,6 +1524,34 @@
   </div>
 </footer>
 
+<!-- Add to Home Screen button (mobile only) -->
+<button id="a2hs-btn" aria-label="Add to home screen">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+  </svg>
+  Add to Home Screen
+</button>
+
+<!-- iOS instructions overlay -->
+<div id="a2hs-ios-tip" role="dialog" aria-modal="true">
+  <div class="a2hs-tip-box">
+    <p class="a2hs-tip-title">Add to Home Screen</p>
+    <ul class="a2hs-tip-steps">
+      <li>1. Tap the <strong>Share</strong> button
+        <svg style="vertical-align:middle;margin:0 2px" width="14" height="14" viewBox="0 0 24 24" fill="#C5A028">
+          <path d="M16 5l-1.42 1.42-1.59-1.59V16h-1.98V4.83L9.42 6.42 8 5l4-4 4 4zm4 5v11c0 1.1-.9 2-2 2H6c-1.11 0-2-.9-2-2V10c0-1.11.89-2 2-2h3v2H6v11h12V10h-3V8h3c1.1 0 2 .89 2 2z"/>
+        </svg>
+        in Safari
+      </li>
+      <li>2. Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+      <li>3. Tap <strong>Add</strong> to confirm</li>
+    </ul>
+    <button class="a2hs-tip-close" onclick="document.getElementById('a2hs-ios-tip').classList.remove('open')">
+      Dismiss
+    </button>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════════
      SCRIPTS
 ═══════════════════════════════════════════════════════════ -->
@@ -1508,6 +1619,53 @@
     input.value = '';
     setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; }, 3000);
   }
+
+  /* ── Service Worker & Add to Home Screen ─────────────────── */
+  (function initPWA() {
+    // Don't show if already running as installed PWA
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
+
+    const btn = document.getElementById('a2hs-btn');
+    const iosTip = document.getElementById('a2hs-ios-tip');
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    const isAndroid = /android/i.test(navigator.userAgent);
+
+    let deferredPrompt = null;
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+
+    // Android: capture the install prompt
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.classList.add('visible');
+    });
+
+    // iOS Safari: always show the button (no install prompt API)
+    if (isIOS) btn.classList.add('visible');
+
+    btn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (outcome === 'accepted') btn.classList.remove('visible');
+      } else if (isIOS) {
+        iosTip.classList.add('open');
+      }
+    });
+
+    // Close iOS tip when tapping backdrop
+    iosTip.addEventListener('click', e => {
+      if (e.target === iosTip) iosTip.classList.remove('open');
+    });
+
+    // Hide once installed
+    window.addEventListener('appinstalled', () => btn.classList.remove('visible'));
+  })();
 
   /* ── Featured Tracks ─────────────────────────────────────── */
   const featuredTracks = [

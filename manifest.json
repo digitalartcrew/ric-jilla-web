@@ -1,0 +1,24 @@
+{
+  "name": "Ric Jilla — The Pride of Indiana",
+  "short_name": "Ric Jilla",
+  "description": "Official site of Ric Jilla. Stream music, watch videos, and support the Brother Jill Foundation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#9E1B32",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "img/R-12960284-1545367288-2901.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "img/R-12960284-1545367288-2901.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

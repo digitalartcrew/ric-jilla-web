@@ -989,52 +989,19 @@
     #a2hs-btn.visible { display: flex; }
     @media (min-width: 769px) { #a2hs-btn { display: none !important; } }
 
-    /* iOS tip overlay */
+    /* iOS tooltip */
     #a2hs-ios-tip {
-      display: none; position: fixed; inset: 0;
-      background: rgba(5,5,5,.88); z-index: 300;
-      align-items: flex-end; justify-content: center;
-      padding-bottom: 2rem;
+      display: none; position: fixed;
+      bottom: 5rem; left: 50%; transform: translateX(-50%);
+      z-index: 300; white-space: nowrap;
+      background: #1a1a1a; border: 1px solid var(--border);
+      border-radius: 2px; padding: .6rem 1rem;
+      font-size: .7rem; color: var(--muted); letter-spacing: .04em;
+      pointer-events: none;
+      animation: a2hs-rise .3s ease both;
     }
-    #a2hs-ios-tip.open { display: flex; }
-    .a2hs-tip-box {
-      background: #161616;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.75rem 2rem;
-      max-width: 340px; width: 90%;
-      text-align: center;
-      position: relative;
-    }
-    .a2hs-tip-box::after {
-      content: '';
-      position: absolute; bottom: -10px; left: 50%;
-      transform: translateX(-50%);
-      border: 10px solid transparent;
-      border-top-color: #161616;
-      border-bottom: none;
-    }
-    .a2hs-tip-title {
-      font-family: var(--font-head);
-      font-size: 1rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1rem;
-    }
-    .a2hs-tip-steps {
-      font-size: .8rem; color: var(--muted); line-height: 1.8;
-      list-style: none;
-    }
-    .a2hs-tip-steps li { margin-bottom: .4rem; }
-    .a2hs-tip-steps strong { color: var(--text); }
-    .a2hs-tip-close {
-      margin-top: 1.25rem;
-      font-size: .65rem; font-weight: 600;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: var(--muted); cursor: pointer;
-      background: none; border: none;
-      transition: color var(--transition);
-    }
-    .a2hs-tip-close:hover { color: var(--text); }
+    #a2hs-ios-tip.open { display: block; }
+    #a2hs-ios-tip strong { color: var(--text); }
   </style>
 </head>
 <body>
@@ -1334,67 +1301,54 @@
     </div>
     <div class="videos-grid">
 
+      <!-- ↓ Replace VIDEO_ID with the YouTube video ID from youtube.com/watch?v=VIDEO_ID -->
       <div class="video-card reveal">
         <div class="video-embed">
           <iframe
-            src="https://www.youtube.com/embed/videoseries?list=UUric-jilla"
+            src="https://www.youtube.com/embed/VIDEO_ID_1"
             title="Ric Jilla — Music Videos"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
             loading="lazy">
           </iframe>
-          <div class="video-placeholder" id="vp1" onclick="loadVideo('vp1','https://www.youtube.com/results?search_query=Ric+Jilla+rapper+Indiana')">
-            <div class="yt-play">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <p>Ric Jilla — Official Visuals</p>
-          </div>
         </div>
         <div class="video-info">
           <div class="video-title">Music Videos</div>
           <div class="video-sub">Ric Jilla &bull; Official Visual Content</div>
-          <a href="https://www.youtube.com/results?search_query=Ric+Jilla+rapper" target="_blank" class="video-yt-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="#ff4444"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-            Watch on YouTube
-          </a>
         </div>
       </div>
 
+      <!-- ↓ Replace VIDEO_ID with the YouTube video ID from youtube.com/watch?v=VIDEO_ID -->
       <div class="video-card reveal reveal-delay-1">
         <div class="video-embed">
-          <div class="video-placeholder" onclick="openYT('https://www.youtube.com/results?search_query=Ric+Jilla+BET+Indiana+rapper')">
-            <div class="yt-play">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <p>Ric Jilla — BET Feature</p>
-          </div>
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_2"
+            title="Ric Jilla — BET Feature"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
         </div>
         <div class="video-info">
           <div class="video-title">BET Feature</div>
           <div class="video-sub">Ric Jilla &bull; Indiana's First on BET</div>
-          <a href="https://www.youtube.com/results?search_query=Ric+Jilla+BET" target="_blank" class="video-yt-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="#ff4444"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-            Watch on YouTube
-          </a>
         </div>
       </div>
 
+      <!-- ↓ Replace VIDEO_ID with the YouTube video ID from youtube.com/watch?v=VIDEO_ID -->
       <div class="video-card reveal reveal-delay-2">
         <div class="video-embed">
-          <div class="video-placeholder" onclick="openYT('https://www.youtube.com/results?search_query=Ric+Jilla+Indiana+hip+hop')">
-            <div class="yt-play">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <p>Ric Jilla — Live Performances</p>
-          </div>
+          <iframe
+            src="https://www.youtube.com/embed/VIDEO_ID_3"
+            title="Ric Jilla — Live Performances"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
         </div>
         <div class="video-info">
           <div class="video-title">Live Performances</div>
           <div class="video-sub">Ric Jilla &bull; The Pride of Indiana Live</div>
-          <a href="https://www.youtube.com/results?search_query=Ric+Jilla+live" target="_blank" class="video-yt-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="#ff4444"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-            Watch on YouTube
-          </a>
         </div>
       </div>
 
@@ -1532,25 +1486,8 @@
   Add to Home Screen
 </button>
 
-<!-- iOS instructions overlay -->
-<div id="a2hs-ios-tip" role="dialog" aria-modal="true">
-  <div class="a2hs-tip-box">
-    <p class="a2hs-tip-title">Add to Home Screen</p>
-    <ul class="a2hs-tip-steps">
-      <li>1. Tap the <strong>Share</strong> button
-        <svg style="vertical-align:middle;margin:0 2px" width="14" height="14" viewBox="0 0 24 24" fill="#C5A028">
-          <path d="M16 5l-1.42 1.42-1.59-1.59V16h-1.98V4.83L9.42 6.42 8 5l4-4 4 4zm4 5v11c0 1.1-.9 2-2 2H6c-1.11 0-2-.9-2-2V10c0-1.11.89-2 2-2h3v2H6v11h12V10h-3V8h3c1.1 0 2 .89 2 2z"/>
-        </svg>
-        in Safari
-      </li>
-      <li>2. Scroll down and tap <strong>"Add to Home Screen"</strong></li>
-      <li>3. Tap <strong>Add</strong> to confirm</li>
-    </ul>
-    <button class="a2hs-tip-close" onclick="document.getElementById('a2hs-ios-tip').classList.remove('open')">
-      Dismiss
-    </button>
-  </div>
-</div>
+<!-- iOS tooltip (Safari doesn't allow triggering A2HS programmatically) -->
+<div id="a2hs-ios-tip">Tap <strong>Share</strong> then <strong>"Add to Home Screen"</strong></div>
 
 <!-- ═══════════════════════════════════════════════════════════
      SCRIPTS
@@ -1601,14 +1538,6 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
   revealEls.forEach(el => revealObs.observe(el));
 
-  /* ── YouTube ──────────────────────────────────────────────── */
-  function openYT(url) { window.open(url, '_blank'); }
-  function loadVideo(placeholderId, fallbackUrl) {
-    const el = document.getElementById(placeholderId);
-    if (el) el.style.display = 'none';
-    else window.open(fallbackUrl, '_blank');
-  }
-
   /* ── Subscribe ────────────────────────────────────────────── */
   function handleSubscribe(e) {
     e.preventDefault();
@@ -1655,12 +1584,8 @@
         if (outcome === 'accepted') btn.classList.remove('visible');
       } else if (isIOS) {
         iosTip.classList.add('open');
+        setTimeout(() => iosTip.classList.remove('open'), 3000);
       }
-    });
-
-    // Close iOS tip when tapping backdrop
-    iosTip.addEventListener('click', e => {
-      if (e.target === iosTip) iosTip.classList.remove('open');
     });
 
     // Hide once installed

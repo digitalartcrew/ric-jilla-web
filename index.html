@@ -1303,6 +1303,7 @@
     <div class="videos-grid">
 
       <!-- Brother Jill Foundation video -->
+      <!--
       <div class="video-card reveal">
         <div class="video-embed">
           <video
@@ -1317,7 +1318,58 @@
           <div class="video-sub">Ric Jilla &bull; The Pride of Indiana</div>
         </div>
       </div>
+      -->
 
+      <div class="video-card reveal reveal-delay-1">
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube.com/embed/jUCoDqlDcrQ?si=IsQQxgQbesrSrpWB"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Ric Jilla</div>
+          <div class="video-sub">Ric Jilla &bull; The Pride of Indiana</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal reveal-delay-2">
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube.com/embed/vhVVWN753cE?si=eEZHtCte5TSQRm3Y"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Ric Jilla</div>
+          <div class="video-sub">Ric Jilla &bull; The Pride of Indiana</div>
+        </div>
+      </div>
+
+      <div class="video-card reveal reveal-delay-3">
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube.com/embed/Yew2Ci2NfM8?si=86ugeRY7RMk3XvEy"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Ric Jilla</div>
+          <div class="video-sub">Ric Jilla &bull; The Pride of Indiana</div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -1819,7 +1871,14 @@
     try {
       const res = await fetch('https://itunes.apple.com/search?term=ric+jilla&entity=song&limit=30&country=us');
       const data = await res.json();
-      allTracks = (data.results || []).filter(r => r.kind === 'song');
+      const forSaleTitles = featuredTracks.map(t => t.title.toLowerCase());
+      allTracks = (data.results || []).filter(r => {
+        if (r.kind !== 'song') return false;
+        const collection = (r.collectionName || '').toLowerCase();
+        const trackTitle = (r.trackName || '').toLowerCase();
+        if (collection.includes('free agent')) return true;
+        return forSaleTitles.some(t => trackTitle.includes(t) || t.includes(trackTitle));
+      });
 
       if (!allTracks.length) {
         grid.innerHTML = `<div class="music-loading"><span>No tracks found — visit <a href="https://music.apple.com/us/artist/ric-jilla/412440938" target="_blank" style="color:var(--gold)">Apple Music</a></span></div>`;

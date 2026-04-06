@@ -254,6 +254,28 @@
     }
     .purchase-card:hover { border-color: rgba(255,255,255,.12); }
     .purchase-card.active { border-color: rgba(201,168,76,.4); }
+    .purchase-art-wrap {
+      position: relative; aspect-ratio: 1; overflow: hidden;
+      background: #0a0a0a;
+    }
+    .purchase-art {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease, filter .5s ease;
+      filter: brightness(.85);
+    }
+    .purchase-card:hover .purchase-art { transform: scale(1.04); filter: brightness(.5); }
+    .purchase-art-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-end;
+      padding: .75rem;
+      background: linear-gradient(to top, rgba(6,6,8,.85) 0%, transparent 55%);
+    }
+    .purchase-wave-inline {
+      width: 100%; height: 40px;
+      display: flex; align-items: flex-end; gap: 2px;
+      padding: 0;
+      background: transparent;
+    }
     .purchase-wave {
       height: 56px;
       background: var(--black);
@@ -1625,6 +1647,7 @@
       title: 'Cutch w Nappy3700',
       artist: 'Cutch & Nappy3700',
       price: '$29.99',
+      art: 'img/R-12960284-1545367288-2901.jpg',
       url: 'https://res.cloudinary.com/dcfagqjvf/video/upload/v1775288471/Cutch_w_Nappy3700_smmfrd.mp3'
     },
     {
@@ -1632,6 +1655,7 @@
       title: 'Swisher Sweet',
       artist: 'RicJilla',
       price: '$24.99',
+      art: 'img/images.jpg',
       url: 'https://res.cloudinary.com/dcfagqjvf/video/upload/v1775288467/RicJilla_SwisherSweet_MasterBG_v1_cehnyw.mp3'
     }
   ];
@@ -1730,8 +1754,13 @@
     const grid = document.getElementById('purchaseGrid');
     grid.innerHTML = featuredTracks.map(t => `
       <div class="purchase-card reveal" data-id="${t.id}">
-        <div class="purchase-wave">
-          ${waveHeights.map((h, i) => `<div class="purchase-wave-bar" style="height:${h}px" data-i="${i}"></div>`).join('')}
+        <div class="purchase-art-wrap">
+          <img class="purchase-art" src="${t.art}" alt="${t.title}" loading="lazy" />
+          <div class="purchase-art-overlay">
+            <div class="purchase-wave purchase-wave-inline">
+              ${waveHeights.map((h, i) => `<div class="purchase-wave-bar" style="height:${h}px" data-i="${i}"></div>`).join('')}
+            </div>
+          </div>
         </div>
         <div>
           <div class="purchase-track-name">${t.title}</div>

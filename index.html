@@ -784,7 +784,8 @@
       position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
       background: #0a0a0a;
     }
-    .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-embed iframe,
+    .video-embed video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     .video-placeholder {
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
@@ -1301,8 +1302,24 @@
     </div>
     <div class="videos-grid">
 
-      <!-- ↓ Replace VIDEO_ID with the YouTube video ID from youtube.com/watch?v=VIDEO_ID -->
+      <!-- Brother Jill Foundation video -->
       <div class="video-card reveal">
+        <div class="video-embed">
+          <video
+            src="https://res.cloudinary.com/dcfagqjvf/video/upload/v1775440407/brother-jill/output.mp4"
+            controls
+            preload="metadata"
+            playsinline>
+          </video>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Ric Jilla, On The What</div>
+          <div class="video-sub">Ric Jilla &bull; The Pride of Indiana</div>
+        </div>
+      </div>
+
+      <!-- ↓ Replace VIDEO_ID with the YouTube video ID from youtube.com/watch?v=VIDEO_ID -->
+      <div class="video-card reveal reveal-delay-1">
         <div class="video-embed">
           <iframe
             src="https://www.youtube.com/embed/VIDEO_ID_1"

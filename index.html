@@ -15,6 +15,7 @@
   <meta name="apple-mobile-web-app-title" content="Ric Jilla" />
   <link rel="apple-touch-icon" href="img/R-12960284-1545367288-2901.jpg" />
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -1070,6 +1071,7 @@
   <div class="hero-accent-line"></div>
   <div class="hero-bg-img"></div>
   <div class="hero-bg-gradient"></div>
+  <div id="hero-canvas" style="position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;"></div>
 
   <div class="hero-content">
     <p class="hero-tag">Indiana &bull; Hip-Hop / Rap</p>
@@ -1897,6 +1899,157 @@
     }
   }
   loadMusic();
+</script>
+
+<script>
+/* ── Hero p5 Lighting ─────────────────────────────────────── */
+new p5(function(p) {
+
+  /* ── Bokeh particle ── */
+  class Bokeh {
+    constructor(fresh) {
+      this._init(fresh);
+    }
+    _init(fresh) {
+      this.x    = p.random(p.width);
+      this.y    = fresh ? p.random(p.height) : p.height + p.random(60, 120);
+      this.r    = p.random(6, 72);
+      this.vy   = -p.random(0.15, 0.55);
+      this.vx   = p.random(-0.12, 0.12);
+      this.peak = p.random(0.04, 0.22);
+      this.life = 0;
+      this.max  = p.random(300, 900);
+      // palette: cognac gold, platinum, warm white, deep amber
+      const pal = [
+        [201, 168,  76],
+        [185, 185, 200],
+        [242, 236, 210],
+        [160, 120,  40],
+        [220, 200, 140],
+      ];
+      this.col = p.random(pal);
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life++;
+      if (this.life > this.max || this.y < -this.r * 2) this._init(false);
+    }
+    draw() {
+      const t   = this.life / this.max;
+      // fade in 0→0.15, hold, fade out 0.8→1
+      const env = t < 0.15 ? t / 0.15 : t > 0.8 ? 1 - (t - 0.8) / 0.2 : 1;
+      const a   = this.peak * env;
+      p.noStroke();
+      // layered radial glow
+      for (let step = 4; step >= 1; step--) {
+        const ratio = step / 4;
+        const alpha = a * (1 - ratio * 0.85) * 255;
+        p.fill(this.col[0], this.col[1], this.col[2], alpha);
+        p.ellipse(this.x, this.y, this.r * ratio * 2);
+      }
+    }
+  }
+
+  /* ── Horizontal light streak ── */
+  class Streak {
+    constructor() {
+      this._reset(true);
+    }
+    _reset(cold) {
+      this.active  = false;
+      this.delay   = cold ? p.random(0, 400) : p.random(180, 600);
+      this.y       = p.random(p.height * 0.15, p.height * 0.72);
+      this.speed   = p.random(4, 12);
+      this.len     = p.random(90, 280);
+      this.opacity = p.random(0.05, 0.18);
+      this.x       = -this.len;
+    }
+    update() {
+      if (!this.active) {
+        if (--this.delay <= 0) this.active = true;
+        return;
+      }
+      this.x += this.speed;
+      if (this.x > p.width + this.len) this._reset(false);
+    }
+    draw() {
+      if (!this.active) return;
+      const ctx = p.drawingContext;
+      const grad = ctx.createLinearGradient(this.x, this.y, this.x + this.len, this.y);
+      grad.addColorStop(0,   `rgba(201,168,76,0)`);
+      grad.addColorStop(0.4, `rgba(201,168,76,${this.opacity})`);
+      grad.addColorStop(0.6, `rgba(230,200,110,${this.opacity * 1.2})`);
+      grad.addColorStop(1,   `rgba(201,168,76,0)`);
+      ctx.save();
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = p.random(0.5, 1.5);
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x + this.len, this.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  /* ── Ambient sweep light ── */
+  class Sweep {
+    constructor() { this._reset(); }
+    _reset() {
+      this.x     = p.random(p.width * 0.1, p.width * 0.9);
+      this.phase = 0;
+      this.speed = p.random(0.003, 0.007);
+      this.w     = p.random(p.width * 0.25, p.width * 0.55);
+      this.delay = p.random(200, 500);
+    }
+    update() {
+      if (this.delay > 0) { this.delay--; return; }
+      this.phase += this.speed;
+      if (this.phase > Math.PI) this._reset();
+    }
+    draw() {
+      if (this.delay > 0 || this.phase <= 0) return;
+      const alpha = Math.sin(this.phase) * 18;
+      const ctx   = p.drawingContext;
+      const grad  = ctx.createRadialGradient(
+        this.x, p.height, 0,
+        this.x, p.height, this.w
+      );
+      grad.addColorStop(0,   `rgba(201,168,76,${alpha / 255})`);
+      grad.addColorStop(0.5, `rgba(180,140,60,${alpha * 0.3 / 255})`);
+      grad.addColorStop(1,   `rgba(0,0,0,0)`);
+      ctx.save();
+      ctx.fillStyle = grad;
+      ctx.fillRect(this.x - this.w, p.height - this.w, this.w * 2, this.w);
+      ctx.restore();
+    }
+  }
+
+  let bokeh = [], streaks = [], sweeps = [];
+
+  p.setup = function() {
+    const hero   = document.getElementById('hero');
+    const canvas = p.createCanvas(hero.offsetWidth, hero.offsetHeight);
+    canvas.parent('hero-canvas');
+    p.pixelDensity(Math.min(window.devicePixelRatio, 2));
+    for (let i = 0; i < 60; i++) bokeh.push(new Bokeh(true));
+    for (let i = 0; i < 5;  i++) streaks.push(new Streak());
+    for (let i = 0; i < 3;  i++) sweeps.push(new Sweep());
+  };
+
+  p.windowResized = function() {
+    const hero = document.getElementById('hero');
+    p.resizeCanvas(hero.offsetWidth, hero.offsetHeight);
+  };
+
+  p.draw = function() {
+    p.clear();
+    sweeps.forEach(s  => { s.update(); s.draw(); });
+    bokeh.forEach(b   => { b.update(); b.draw(); });
+    streaks.forEach(s => { s.update(); s.draw(); });
+  };
+
+});
 </script>
 </body>
 </html>
